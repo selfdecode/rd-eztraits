@@ -4,8 +4,10 @@ Tool that executes a set of rules defined in lua syntax. It runs on Linux, and M
 
 ## Getting started
 
-1. Clone the repo  
-2. type  
+1. Clone the repo:  
+git clone https://github.com/selfdecode/rd-eztraits.git  
+
+3. type:  
    cd rd-eztraits  
    make  
 
