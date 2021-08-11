@@ -1,0 +1,28 @@
+echo TEST 1 - Simple
+
+./EZTraitsCSV -i data/sample.calls -lua scripts/test.lua -rs rsid -pos pos -call call
+echo
+
+echo TEST 2 - lactose tolerance/intolerance
+
+./EZTraitsCSV -i data/sample.calls -lua scripts/lactose.lua -rs rsid -pos pos -call call
+echo
+
+rm scripts/lactose_temp.lua
+rm scripts/fructose_temp.lua
+
+echo TEST 3 - lactose tolerance/intolerance, from text
+
+./Txt2Lua -i scripts/lactose.txt > scripts/lactose_temp.lua
+./EZTraitsCSV -i data/sample.calls -lua scripts/lactose_temp.lua -rs rsid -pos pos -call call
+echo
+
+echo TEST 4 - fructose intolerance
+
+./EZTraitsCSV -i data/sample.calls -lua scripts/fructose.lua -rs rsid -pos pos -call call
+echo
+
+echo TEST 5 - fructose intolerance, from text
+
+./Txt2Lua -i scripts/fructose.txt > scripts/fructose_temp.lua
+./EZTraitsCSV -i data/sample.calls -lua scripts/fructose_temp.lua -rs rsid -pos pos -call call

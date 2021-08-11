@@ -1,0 +1,13 @@
+All
+rs1800546 'CC'
+rs76917243 'GG'
+rs78340951 'GG' or 'AG' or 'AA'
+== "Tolerant to Fructose"
+
+Any:
+rs1800546 'C/G'
+rs76917243 'G/T'
+rs78340951 C/G
+== "Possibly intolerant to Fructose"
+
+else "Fructose Intolerant"

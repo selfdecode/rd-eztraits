@@ -1,0 +1,10 @@
+Any
+rs4988235 'GG' 'GA'
+rs4954490 'AA' 'AG'
+rs869051967 'CC' 'AC'
+rs41525747 'CC' 'CG'
+rs41380347 'CC' 'AC'
+rs145946881 'GG' 'CG'
+== "Lactose Tolerant"
+else "Lactose Intolerant"
+
