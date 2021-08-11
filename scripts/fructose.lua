@@ -12,7 +12,7 @@
           return risk, comment
         end
 
-        if rs76917243 == ""/GT then
+        if rs76917243 == "G/T" then
           comment =  "Possibly intolerant to Fructose"
           return risk, comment
         end
