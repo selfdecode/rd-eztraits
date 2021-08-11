@@ -67,7 +67,9 @@ You can use the () brackets as well to define herarchies.
 	rs78340951 'CC'
 	== "Fructose Intolerant"
 
-Running ./Txt2Lua will produce:
+EZTraits accepts and interprets the keywords ‘All’, ‘Any’, and ‘else’, optionally followed by a colon. Acceptable genotype call formats include ‘CG’ and C/G (with optional single quotation marks), where the latter convention has to be used for sites that contain indels, e.g. ‘T/TGAT’.  
+
+Running ./Txt2Lua turn above text into this lua snippet:  
 
 
         -- This scriptlet was automatically
