@@ -101,6 +101,9 @@ int main( int argc, char** argv )
 
   int i;
 
+  // Check that we have everything!!
+  svec<int> found;
+  found.resize(params.isize(), 0);
  
   string out = "function evaluate ( )\n\n";
   out += "\tcomment = \"none\"\n";
@@ -133,7 +136,7 @@ int main( int argc, char** argv )
 
     //StringParser p;
     //p.SetLine(parser.AsString(9), ":");
-    string s = parser.AsString(9);
+    string s = parser.AsString(parser.GetItemCount()-1);
     string call;
     
     if (s[0] == '0')
@@ -149,9 +152,11 @@ int main( int argc, char** argv )
     for (i=0; i<params.isize(); i++) {
       if (rs == params[i]) {
 	out += "\t" + rs + " = \"" + call + "\"\n";
+	found[i]++;
       }
       if (pos == params[i]) {
 	out += "\t" + pos + " = \"" + call + "\"\n";
+	found[i]++;
       }
     }
   }
@@ -169,6 +174,17 @@ int main( int argc, char** argv )
     cout << "------------------------------------------</SCRIPT>" << endl << endl;
   }
 
+  for (i=0; i<found.isize(); i++) {
+    if (found[i] == 0) {
+      cout << "ERROR - SNP not found in VCF: " << params[i] << " - exiting!" << endl;
+      return -1;
+    }
+    if (found[i] > 1) {
+      cout << "ERROR - SNP " << params[i] << " found " << found[i] << " times in VCF - exiting!" << endl;
+      return -1;
+    }
+  }
+  
   
   LuaState lstate;
 

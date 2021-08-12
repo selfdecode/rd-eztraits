@@ -1,13 +1,14 @@
-All
-rs1800546 'CC'
-rs76917243 'GG'
-rs78340951 'GG' or 'AG' or 'AA'
-== "Tolerant to Fructose"
+Any
+rs1800546 'GG'
+rs76917243 'TT'
+rs78340951 'CC'
+== "Fructose Intolerant"
 
 Any:
 rs1800546 'C/G'
 rs76917243 'G/T'
 rs78340951 C/G
-== "Possibly intolerant to Fructose"
+== "Variant Carrier"
 
-else "Fructose Intolerant"
+else "Tolerant to Fructose"
+
