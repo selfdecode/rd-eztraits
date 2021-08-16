@@ -19,9 +19,10 @@ git clone https://github.com/selfdecode/rd-eztraits.git
 
 The program needs two inputs:  
 
-(1) A VCF or CSV file with the genotype calls (see data/sample.vcf and data/sample.calls in the repo).  
+(1) A VCF or TSV file with the genotype calls (see data/sample.vcf and data/sample.calls in the repo).  
 
-Use the -i option to point the program to the call file. In addition, specify the rs id column using the -rs option, the -pos option for the chromosome position (has to follow the convention "chr1:16949"), and the -call option for the genotype (has to follow the convention "A/G", where the order of calls matters, and has to be consistent with the lua rules!). Note that at least the rs ids or positions are required; you can have both, yet either one is sufficient.  
+Use the -i option to point the program to the call file, which is either in VCF or TSV format. File can be gzip-compressed. For TSV files, specify the rs id column using the -rs option, the -pos option for the chromosome position (has to follow the convention "chr1:16949"), and the -call option for the genotype (has to follow the convention "A/G", where the order of calls should follow the ref/alt convention). Note that at least the rs ids or positions are required; you can have both, yet either one is sufficient.
+
 
 (2) A lua-type set of rules (see scripts/test.lua in the repo).
 
