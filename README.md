@@ -46,7 +46,8 @@ Here, you can address the genotypes by their names (rs id or chromosome position
 will not evaluate the rest of the script. 
 
 Notes:  
-~= is the not equal operator  
+To print the final Lua script to the console, use the -pring option.
+~= is the not equal operator in Lua 
 You can use the () brackets as well to define herarchies.  
 
 
