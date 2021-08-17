@@ -103,8 +103,12 @@ else
                              else
 				 ifeq ($(OS_MACHINE),armv7l)
                              	 include Makefile_g++_armv7l
-                             	 else
+                                 else
+				     ifeq ($(OS_MACHINE),arm64)
+                             	     include Makefile_g++_arm64
+                            	     else
 					$(error No appropriate Makefile_g++ file for this platform.)
+				     endif
 		                 endif
 			     endif
                          endif
