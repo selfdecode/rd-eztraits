@@ -8,6 +8,7 @@
 #           x86_64 (Opteron) - other people tell us that it works
 #           alpha            - we used to use it, probably unusable now
 #           macosx           - not fully functional
+#           arm64            - experimental
 #
 # Options
 #
@@ -75,6 +76,9 @@ ifneq ($(UNSUPPORTED),yes)
 	       ACCEPT_HARDWARE := yes
           endif
 	  ifeq ($(OS_MACHINE),armv7l)
+	       ACCEPT_HARDWARE := yes
+          endif
+	  ifeq ($(OS_MACHINE),arm64)
 	       ACCEPT_HARDWARE := yes
           endif
 	  ifeq ($(ACCEPT_HARDWARE),no)
