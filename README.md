@@ -15,6 +15,12 @@ git clone https://github.com/selfdecode/rd-eztraits.git
 
 ./test_EZTraits
 
+## Useful options
+
+-print prints the final lua script to the console
+
+-permit allows for SNPs missing in the input file, by default, missing SNPs will cause an error. 
+
 ## Run it
 
 The program needs two inputs:  
