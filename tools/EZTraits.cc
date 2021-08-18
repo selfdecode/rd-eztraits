@@ -83,17 +83,20 @@ int main( int argc, char** argv )
   commandArg<string> fileCmmd("-i","input VCF file");
   commandArg<string> luaCmmd("-lua","raw lua file");
   commandArg<bool> printCmmd("-print","print the full lua script", false);
+  commandArg<bool> aCmmd("-permit","permit missing SNPs", false);
   commandLineParser P(argc,argv);
   P.SetDescription("Calling traits via a lua script.");
   P.registerArg(fileCmmd);
   P.registerArg(luaCmmd);
   P.registerArg(printCmmd);
+  P.registerArg(aCmmd);
 
   P.parse();
   
   string fileName = P.GetStringValueFor(fileCmmd);
   string lua = P.GetStringValueFor(luaCmmd);
   bool bPrint = P.GetBoolValueFor(printCmmd);
+  bool bPermit = P.GetBoolValueFor(aCmmd);
 
   svec<string> code;
   svec<string> params;
@@ -174,14 +177,16 @@ int main( int argc, char** argv )
     cout << "------------------------------------------</SCRIPT>" << endl << endl;
   }
 
-  for (i=0; i<found.isize(); i++) {
-    if (found[i] == 0) {
-      cout << "ERROR - SNP not found in VCF: " << params[i] << " - exiting!" << endl;
-      return -1;
-    }
-    if (found[i] > 1) {
-      cout << "ERROR - SNP " << params[i] << " found " << found[i] << " times in VCF - exiting!" << endl;
-      return -1;
+  if (!bPermit) {
+    for (i=0; i<found.isize(); i++) {
+      if (found[i] == 0) {
+	cout << "ERROR - SNP not found in VCF: " << params[i] << " - exiting!" << endl;
+	return -1;
+      }
+      if (found[i] > 1) {
+	cout << "ERROR - SNP " << params[i] << " found " << found[i] << " times in VCF - exiting!" << endl;
+	return -1;
+      }
     }
   }
   

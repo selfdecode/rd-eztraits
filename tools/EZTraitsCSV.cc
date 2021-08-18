@@ -113,6 +113,7 @@ int main( int argc, char** argv )
   commandArg<string> posCmmd("-pos","header for column listing the chromosomal position", "");
   commandArg<string> callCmmd("-call","genotype call column header");
   commandArg<bool> printCmmd("-print","print the full lua script", false);
+  commandArg<bool> aCmmd("-permit","permit missing SNPs", false);
   commandLineParser P(argc,argv);
   P.SetDescription("Calling traits via a lua script.");
   P.registerArg(fileCmmd);
@@ -121,6 +122,7 @@ int main( int argc, char** argv )
   P.registerArg(posCmmd);
   P.registerArg(callCmmd);
   P.registerArg(printCmmd);
+  P.registerArg(aCmmd);
 
   P.parse();
   
@@ -130,6 +132,7 @@ int main( int argc, char** argv )
   string posColName = P.GetStringValueFor(posCmmd);
   string lua = P.GetStringValueFor(luaCmmd);
   bool bPrint = P.GetBoolValueFor(printCmmd);
+  bool bPermit = P.GetBoolValueFor(aCmmd);
 
   if (rsColName == "" && posColName == "") {
     cout << "ERROR: Please specify either -rs, -pos, or both!!" << endl;
@@ -144,6 +147,9 @@ int main( int argc, char** argv )
   //  cout << "Start" << endl;
   
   int i;
+
+  svec<int> found;
+  found.resize(params.isize(), 0);
 
   /*
   for (i=0; i<params.isize(); i++) {
@@ -237,10 +243,14 @@ int main( int argc, char** argv )
       if (rs == params[i]) {
 	//cout << "FOUND: " << rs << " " << i << endl;
 	out += "\t" + rs + " = \"" + call + "\"\n";
+	found[i]++;
+
 	//cout << out << endl;
       }
       if (pos == params[i]) {      
 	out += "\t" + pos + " = \"" + call + "\"\n";
+	found[i]++;
+
       }
     }
   }
@@ -257,6 +267,23 @@ int main( int argc, char** argv )
     cout << out << endl;
     cout << "------------------------------------------</SCRIPT>" << endl << endl;
   }
+
+  if (!bPermit) {
+    for (i=0; i<found.isize(); i++) {
+      if (found[i] == 0) {
+	cout << "ERROR - SNP not found in VCF: " << params[i] << " - exiting!" << endl;
+	return -1;
+      }
+      if (found[i] > 1) {
+	cout << "ERROR - SNP " << params[i] << " found " << found[i] << " times in VCF - exiting!" << endl;
+	return -1;
+      }
+    }
+  }
+  
+ 
+
+
   
   LuaState lstate;
 
