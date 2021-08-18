@@ -77,6 +77,33 @@ void ParseLua(svec<string> & code, svec<string> & params, const string & fileNam
   UniqueSort(params);
 }
 
+
+void FixCall(string & c)
+{
+  if (c.length() == 1)
+    return;
+  if (c.length() == 2) {
+    string f;
+    f += c[0];
+    f += "/";
+    f += c[1];
+    c = f;
+  }
+    
+}
+
+string UnDOS(const string & s)
+{
+  string r;
+
+  for (int i=0; i<(int)s.length(); i++) {
+    if (s[i] != 13 && s[i] != 10)
+      r += s[i];
+  }
+  return r;
+}
+
+
 int main( int argc, char** argv )
 {
 
@@ -113,6 +140,9 @@ int main( int argc, char** argv )
   svec<string> params;
   ParseLua(code, params, lua);
 
+  //cout << "Parameters: " << params.isize() << endl;
+  //  cout << "Start" << endl;
+  
   int i;
 
   /*
@@ -141,15 +171,48 @@ int main( int argc, char** argv )
 
   parser.ParseLine();
 
-  for (i=0; i<parser.GetItemCount(); i++) {
-    //cout << parser.AsString(i) << endl;
-    if (parser.AsString(i) == rsColName)
-      rsCol = i;
-    if (parser.AsString(i) == posColName)
-      posCol = i;
-    if (parser.AsString(i) == callColName)
-      callCol = i;
+  if (parser.AsString(0) == "#") {
+    while (true) {
+      if (parser.GetItemCount() >= 2) {
+      
+	for (i=0; i<parser.GetItemCount(); i++) {
+	  // cout << UnDOS(parser.AsString(i)) << " " << i << endl;
+	  if (UnDOS(parser.AsString(i)) == rsColName)
+	    rsCol = i-1;
+	  /*if (UnDOS(parser.AsString(i)) == posColName)
+	    posCol = i-1;*/
 
+	  if (UnDOS(parser.AsString(i)) == callColName) {
+	    callCol = i-1;
+	  }
+	  
+	}
+      
+	if (parser.AsString(1) == "rsid")
+	  break;
+      
+	if (parser.AsString(0) != "#") {
+	  cout << "Header not found!!" << endl;
+	  return -1;
+	}
+      }
+      
+      parser.ParseLine();
+      //cout << parser.Line();
+
+    }
+
+  } else {
+    for (i=0; i<parser.GetItemCount(); i++) {
+      //cout << parser.AsString(i) << endl;
+      if (parser.AsString(i) == rsColName)
+	rsCol = i;
+      if (parser.AsString(i) == posColName)
+	posCol = i;
+      if (parser.AsString(i) == callColName)
+	callCol = i;
+      
+    }
   }
   if (callCol == -1) {
     cout << "NOT FOUND: " << callColName << endl;
@@ -161,7 +224,8 @@ int main( int argc, char** argv )
     if (parser.GetItemCount() == 0)
       continue;
     
-    string call = parser.AsString(callCol);
+    string call = UnDOS(parser.AsString(callCol));
+    FixCall(call);
     string rs;
     if (rsCol != -1)
       rs = parser.AsString(rsCol);
@@ -171,9 +235,11 @@ int main( int argc, char** argv )
     Replace(pos);
     for (i=0; i<params.isize(); i++) {
       if (rs == params[i]) {
+	//cout << "FOUND: " << rs << " " << i << endl;
 	out += "\t" + rs + " = \"" + call + "\"\n";
+	//cout << out << endl;
       }
-      if (pos == params[i]) {
+      if (pos == params[i]) {      
 	out += "\t" + pos + " = \"" + call + "\"\n";
       }
     }
